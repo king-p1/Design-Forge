@@ -24,7 +24,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  //todo change the bg
+  //todo change the bg and add clerk so certain routes i.e canvas page is protected oh and design a logo too
   return (
     <html lang="en">
       <body
