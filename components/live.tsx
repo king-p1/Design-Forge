@@ -1,20 +1,31 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useBroadcastEvent, useEventListener, useMyPresence, useOthers } from "@/liveblocks.config";
+import { useBroadcastEvent, useEventListener, useMyPresence } from "@/liveblocks.config";
 import { LiveCursors } from "./liveblocks-cursor/live-cursor";
 import { useCallback, useEffect, useState } from "react";
 import { CursorChat } from "./liveblocks-cursor/cursor-chat";
-import { CursorMode, CursorState, Reaction, ReactionEvent } from "@/types/type";
+import { CursorMode, CursorState, Reaction } from "@/types/type";
 import ReactionSelector from "./liveblocks-reaction/reaction-button";
 import FlyingReaction from "./liveblocks-reaction/flying-reaction";
 import useInterval from "@/hooks/useInterval";
+import { Comments } from "./liveblock-comments/comments";
+
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu"
+import { shortcuts } from "@/constants";
+
 
 type Props ={
   canvasRef: React.MutableRefObject<HTMLCanvasElement |null>
+  undo: ()=> void
+  redo: ()=> void
 }
 
-export const Live = ({canvasRef}:Props) => {
-  const others = useOthers();
-
+export const Live = ({canvasRef,undo,redo}:Props) => {
+ 
   const [cursorState, setCursorState] = useState<CursorState>({
     mode: CursorMode.Hidden,
   });
@@ -26,7 +37,7 @@ export const Live = ({canvasRef}:Props) => {
   const broadcast = useBroadcastEvent()
 
   
-  const [{ cursor }, updateMyPresence] = useMyPresence() as any;
+  const [{ cursor }, updateMyPresence] = useMyPresence() 
 
  
 
@@ -143,7 +154,7 @@ useInterval(()=>{
 },75)
 
 useEventListener((eventDatum)=>{
-  const e = eventDatum.event as ReactionEvent
+  const e = eventDatum.event 
 
   setReactions((reactions) =>  reactions.concat([
       {
@@ -155,15 +166,49 @@ useEventListener((eventDatum)=>{
   
   })
   
+  const handleContextMenuClick = useCallback((key:string)=>{
+switch(key){
+case 'Chat':
+setCursorState({
+  mode:CursorMode.Chat,
+  previousMessage:null,
+  message:''
+})
+break
+
+case 'Reactions':
+setCursorState({mode:CursorMode.ReactionSelector})
+break
+
+case 'Redo':
+redo()
+break
+
+case 'Undo':
+  undo()
+  break
+
+
+break
+
+default:
+  break
+
+}
+  },[])
 
   return (
-    <div
+    <ContextMenu>
+  
+
+    <ContextMenuTrigger
     id="canvas"
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
-      className="flex h-screen w-full justify-center items-center text-center"
+      onKeyUp={(e)=> e.stopPropagation()} //solves the e character bug
+      className="relative flex h-screen flex-1 w-full justify-center items-center "
     >
 <canvas
 ref={canvasRef}
@@ -195,7 +240,23 @@ ref={canvasRef}
         />
       )}
 
-      <LiveCursors others={others} />
-    </div>
+      <LiveCursors  />
+
+<Comments/>
+
+     </ContextMenuTrigger>
+     <ContextMenuContent className="right-menu-content" >
+      {shortcuts.map((item)=>(
+        // todo fine tune this hover
+        <ContextMenuItem key={item.key} onClick={()=>{handleContextMenuClick(item.name)}} className="flex gap-3 hover:bg-primary-grey-200 hover:rounded-md">
+          <p> {item.name} </p>
+        <p className="text-xs text-primary-grey-400">{item.shortcut}</p>
+        
+        </ContextMenuItem>
+        
+      ))}
+   
+  </ContextMenuContent>
+      </ContextMenu>
   );
 };

@@ -10,7 +10,7 @@ export const LeftSidebar = ({ allShapes }: { allShapes: Array<any> }) => {
   const memoizedShapes = useMemo(
     () => (
          <section className="flex flex-col border-t border-primary-grey-200 bg-primary-grey-100 text-primary-grey-300 min-w-[227px] sticky left-0 h-full max-sm:hidden select-none overflow-y-auto pb-20"> 
-        <h3 className="border border-primary-grey-200 px-5 py-4 text-xs uppercase">Layers</h3>
+        <h3 className="border-b-2   border-b-primary-grey-200 px-5 py-4 text-base font-semibold uppercase">Layers</h3>
         <div className="flex flex-col">
           {allShapes?.map((shape: any) => {
             const info = getShapeInfo(shape[1]?.type);
@@ -18,7 +18,7 @@ export const LeftSidebar = ({ allShapes }: { allShapes: Array<any> }) => {
             return (
               <div
                 key={shape[1]?.objectId}
-                className="group my-1 flex items-center gap-2 px-5 py-2.5 hover:cursor-pointer hover:bg-primary-green hover:text-primary-black"
+                className="group my-1 flex items-center gap-2 px-5 py-2.5 hover:cursor-pointer hover:bg-blue-500 hover:text-neutral-200"
               >
                 <Image
                   src={info?.icon}

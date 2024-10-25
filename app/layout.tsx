@@ -1,18 +1,10 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
-import "./globals.css";
-import { Room } from "./(liveblocks)/Room";
+import { ClerkProvider} from '@clerk/nextjs'
+ import "./globals.css";
+ import { dark } from "@clerk/themes"
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+import { Room } from "./(liveblocks)/Room";
+ 
 
 export const metadata: Metadata = {
   title: "Design Forge",
@@ -27,12 +19,30 @@ export default function RootLayout({
   //todo change the bg and add clerk so certain routes i.e canvas page is protected oh and design a logo too
   return (
     <html lang="en">
+           <head>
+  <link rel="icon" href="/design-forge-logo.png"   type="image/svg+xml" />
+        </head>
+
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased font-mono bg-primary-black`}
+        className={`antialiased font-mono bg-primary-black`}
       >
+<ClerkProvider
+appearance={{
+  baseTheme:dark,
+  variables:{colorPrimary:'#3371FF',
+    fontSize:'16px'
+  }
+}}
+>
+
+
+
         <Room>
         {children}
         </Room>
+   
+   
+</ClerkProvider>
        </body>
     </html>
   );

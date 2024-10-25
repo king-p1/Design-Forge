@@ -1,5 +1,5 @@
 import React from "react";
-
+import {Flame} from 'lucide-react'
 type Props = {
   setReaction: (reaction: string) => void;
 };
@@ -14,8 +14,7 @@ export default function ReactionSelector({ setReaction }: Props) {
      
       onPointerMove={(e) => e.stopPropagation()}
     >
-      <ReactionButton reaction="👍" onSelect={setReaction} />
-      <ReactionButton reaction="🔥" onSelect={setReaction} />
+      <ReactionButton reaction={<Flame color="red" />} onSelect={setReaction} />
       <ReactionButton reaction="😍" onSelect={setReaction} />
       <ReactionButton reaction="👀" onSelect={setReaction} />
       <ReactionButton reaction="😱" onSelect={setReaction} />
@@ -28,8 +27,8 @@ function ReactionButton({
   reaction,
   onSelect,
 }: {
-  reaction: string;
-  onSelect: (reaction: string) => void;
+  reaction: any ;
+  onSelect: (reaction: any) => void;
 }) {
   return (
     <button

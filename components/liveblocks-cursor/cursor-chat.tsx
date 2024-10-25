@@ -20,14 +20,14 @@ export const CursorChat = ({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if(e.key === 'Enter'){
+    if(e.key === "Enter"){
 
         setCursorState({
             mode:CursorMode.Chat,
             previousMessage:cursorState.message,
-            message:''
+            message:""
         })
-    }else if (e.key === 'Escape') {
+    }else if (e.key === "Escape") {
         setCursorState({
             mode:CursorMode.Hidden
         })

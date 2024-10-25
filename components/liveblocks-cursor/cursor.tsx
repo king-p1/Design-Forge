@@ -3,8 +3,8 @@ import React from 'react'
 
 type Props = {
     color:string
-    x:string
-    y:string
+    x:number
+    y:number
     message?:string
 }
 

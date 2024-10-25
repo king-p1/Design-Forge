@@ -13,7 +13,7 @@ type Props = {
   handleInputChange: (property: string, value: string) => void;
 };
 
-const Dimensions = ({ width, height, isEditingRef, handleInputChange }: Props) => (
+export const Dimensions = ({ width, height, isEditingRef, handleInputChange }: Props) => (
   <section className='flex flex-col border-b border-primary-grey-200'>
     <div className='flex flex-col gap-4 px-6 py-3'>
       {dimensionsOptions.map((item) => (
@@ -42,4 +42,4 @@ const Dimensions = ({ width, height, isEditingRef, handleInputChange }: Props) =
   </section>
 );
 
-export default Dimensions;
+ 
